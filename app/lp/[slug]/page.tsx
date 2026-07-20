@@ -74,9 +74,11 @@ export default async function LandingPage({ params }: Params) {
   const disease = (slug.split("-")[0] || "").replace(/^\w/, (c) => c.toUpperCase());
   const leadCampaign = `${disease} Landing Page`;
 
+  console.log(t);
+  
   return (
     <div id="top" className="bg-white">
-      <LpHeader />
+      <LpHeader book={t?.banner?.banner_phone_number} />
       <main>
         {/* ---------- Hero + Form (banner) ---------- */}
         <HeroBreadcrumb

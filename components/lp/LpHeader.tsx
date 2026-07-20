@@ -45,8 +45,11 @@ export const lpNav:any  = [
     href: "#faqs",
   },
 ]
+interface Data{
+  book:string;
+}
 
-export default function Navbar() {
+export default function Navbar({book}:Data) {
   const [active, setActive] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -181,7 +184,7 @@ useEffect(() => {
 
             <div className="flex items-center gap-2">
               <Link
-                href='#book'
+                href={book ? `tel:${book}` : '#book'}
                 className="hidden lg:inline-flex items-center group"
               >
                 <span className="btn-gradient text-white group-hover:shadow-xl inline-flex items-center gap-2 rounded-full px-5 py-2 xl:py-3 text-sm lg:text-[13px] xl:text-sm font-medium  shadow-lg">

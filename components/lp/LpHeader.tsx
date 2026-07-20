@@ -181,7 +181,6 @@ useEffect(() => {
                 </Link>
               ))}
             </nav>
-
             <div className="flex items-center gap-2">
               <Link
                 href={book ? `tel:${book}` : '#book'}

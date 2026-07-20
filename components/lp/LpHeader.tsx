@@ -12,9 +12,11 @@ import {
   Briefcase,
   MapPin,
   ShoppingBag,
+  X,
 } from "lucide-react";
 
 import LpMobileNav from "../LpMobileNav";
+import { useSearchParams } from "next/navigation";
 
 const utilityIcons: Record<string, React.ReactNode> = {
   "Download mibPULSE App": <Smartphone className="h-3.5 w-3.5" />,
@@ -23,10 +25,10 @@ const utilityIcons: Record<string, React.ReactNode> = {
   "Nearest Centres": <MapPin className="h-3.5 w-3.5" />,
   "Shop Now": <ShoppingBag className="h-3.5 w-3.5" />,
 };
-export const lpNav:any  = [
+export const lpNav: any = [
   {
     label: "Why Madhavbaug",
-    href: "#why-madhavbaug",   
+    href: "#why-madhavbaug",
   },
   {
     label: "Doctor-Led Assessment",
@@ -45,18 +47,38 @@ export const lpNav:any  = [
     href: "#faqs",
   },
 ]
-interface Data{
-  book:string;
+interface Data {
+  book: string;
+  title: string;
 }
 
-export default function Navbar({book}:Data) {
+export default function Navbar({ book, title }: Data) {
   const [active, setActive] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
 
+  const source = searchParams.get("utm_source");
   // const activeItem = mainNav.find((i) => i.label === active);
-
+  const createLead = async () => {
+    try {
+      await fetch("https://powermap.in/api/v1/website/leads/create-page", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": "MB_PROD_yozER_nc6sCpwHAfCQZOe8Go4OvQIiGBQ_QzluQNs",
+        },
+        body: JSON.stringify({
+          campaign: title,
+          source: source,
+          medium: "Health Us",
+        }),
+      });
+    } catch (error) {
+      console.error("Lead API Error:", error);
+    }
+  };
   // Absolute over the banner at the top; fixed (sticky) once scrolled.
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 120);
@@ -81,35 +103,35 @@ export default function Navbar({book}:Data) {
       document.removeEventListener("keydown", onKey);
     };
   }, [active]);
-useEffect(() => {
-  const handleClick = (e: Event) => {
-    const target = e.currentTarget as HTMLAnchorElement;
-    const href = target.getAttribute("href");
+  useEffect(() => {
+    const handleClick = (e: Event) => {
+      const target = e.currentTarget as HTMLAnchorElement;
+      const href = target.getAttribute("href");
 
-    if (!href?.startsWith("#")) return;
+      if (!href?.startsWith("#")) return;
 
-    e.preventDefault();
+      e.preventDefault();
 
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
 
-      // URL hash update
-      history.replaceState(null, "", href);
-    }
-  };
+        // URL hash update
+        history.replaceState(null, "", href);
+      }
+    };
 
-  const links = document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
+    const links = document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]');
 
-  links.forEach((link) => link.addEventListener("click", handleClick));
+    links.forEach((link) => link.addEventListener("click", handleClick));
 
-  return () => {
-    links.forEach((link) => link.removeEventListener("click", handleClick));
-  };
-}, []);
+    return () => {
+      links.forEach((link) => link.removeEventListener("click", handleClick));
+    };
+  }, []);
   return (
     <header
       className={`${scrolled ? "fixed animate-mm-in" : "absolute"
@@ -154,34 +176,37 @@ useEffect(() => {
           {/* ---------- Main bar ---------- */}
           <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8 lg:py-4">
             {/* <Link href="/" className="shrink-0"> */}
-              <Image
-                src="/assets/logo.png"
-                alt="Madhavbaug — Advanced Ayurveda Clinics and Hospitals"
-                width={219}
-                height={42}
-                priority
-                className="h-9 w-auto lg:h-7 xl:h-10"
-              />
+            <Image
+              src="/assets/logo.png"
+              alt="Madhavbaug — Advanced Ayurveda Clinics and Hospitals"
+              width={219}
+              height={42}
+              priority
+              className="h-9 w-auto lg:h-7 xl:h-10"
+            />
             {/* </Link> */}
             {/* Desktop nav */}
             <nav className="hidden items-center gap-7 lg:flex">
-              {lpNav.map((item:any) => (
+              {lpNav.map((item: any) => (
                 <Link
                   key={item.label}
-                 href={item.href}
+                  href={item.href}
                   aria-expanded={active === item.label}
                   className={`flex items-center gap-1 text-sm lg:text-[13px] xl:text-sm transition-colors ${active === item.label
-                      ? "text-brand-purple"
-                      : "text-gray-800 hover:text-brand-purple"
+                    ? "text-brand-purple"
+                    : "text-gray-800 hover:text-brand-purple"
                     }`}
                 >
                   {item.label}
-                
+
                 </Link>
               ))}
             </nav>
             <div className="flex items-center gap-2">
               <Link
+                onClick={() => {
+                  createLead(); // fire-and-forget
+                }}
                 href={book ? `tel:${book}` : '#book'}
                 className="hidden lg:inline-flex items-center group"
               >
@@ -212,7 +237,73 @@ useEffect(() => {
           )} */}
         </div>
       </div>
-      <LpMobileNav book={book} lpNav={lpNav}  open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <LpMobileNav book={book} lpNav={lpNav} open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <>
+        {/* Backdrop */}
+        <div
+          onClick={() => setMobileOpen(false)}
+          className={`fixed inset-0 z-50 bg-black/40 transition-opacity duration-300 lg:hidden ${mobileOpen ? "opacity-100" : "pointer-events-none opacity-0"
+            }`}
+        />
+
+        {/* Drawer */}
+        <aside
+          className={`thin-scroll fixed right-0 top-0 z-50 flex h-full w-[88%] max-w-sm flex-col overflow-y-auto bg-white shadow-2xl transition-transform duration-300 lg:hidden ${mobileOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+        >
+          <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+            <Image src="/assets/logo.png" alt="Madhavbaug" width={160} height={31} />
+            <button
+              onClick={() => setMobileOpen(false)}
+              aria-label="Close menu"
+              className="rounded-full p-2 text-gray-500 hover:bg-gray-100"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <nav className="flex-1 px-5 py-5 space-y-3">
+            {lpNav.map((item: any) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                // aria-expanded={active === item.label}
+                className={`flex items-center gap-1 text-base transition-colors `}
+              >
+                {item.label}
+
+              </Link>
+            ))}
+          </nav>
+
+          <div className="px-5 pb-4">
+            <Link
+              href={book ? `tel:${book}` : '#book'}
+              onClick={() => {
+                  createLead(); // fire-and-forget
+                }}
+              // onClick={() => setMobileOpen(false)}
+              className="inline-flex w-full items-center group"
+            >
+              <span className="btn-gradient w-full justify-center text-white group-hover:shadow-xl inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium  shadow-lg">
+                Book a Consultation
+              </span>
+              <span className="flex shrink-0 w-fit h-10 items-center justify-center rounded-full bg-white/20">
+                <ArrowUpRight className="font-thin w-full h-full p-2.5 rounded-full btn-gradient text-white group-hover:rotate-45 group-hover:shadow-xl duration-300 shadow-lg" />
+              </span>
+            </Link>
+          </div>
+
+          {/* <div className="space-y-2 border-t border-gray-100 bg-cream/50 px-5 py-4 text-sm text-gray-600">
+          {[...utilityLeft, ...utilityRight].map((l) => (
+            <Link key={l.label} href={l.href} onClick={onClose} className="block">
+              {l.label}
+            </Link>
+          ))}
+        </div> */}
+        </aside>
+      </>
     </header>
   );
 }

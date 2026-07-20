@@ -78,7 +78,7 @@ export default async function LandingPage({ params }: Params) {
   
   return (
     <div id="top" className="bg-white">
-      <LpHeader book={t?.banner?.banner_phone_number} />
+      <LpHeader book={t?.banner?.banner_phone_number} title={t?.title}/>
       <main>
         {/* ---------- Hero + Form (banner) ---------- */}
         <HeroBreadcrumb

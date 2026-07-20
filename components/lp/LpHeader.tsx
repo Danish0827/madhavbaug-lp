@@ -163,7 +163,6 @@ useEffect(() => {
                 className="h-9 w-auto lg:h-7 xl:h-10"
               />
             {/* </Link> */}
-
             {/* Desktop nav */}
             <nav className="hidden items-center gap-7 lg:flex">
               {lpNav.map((item:any) => (
@@ -213,7 +212,7 @@ useEffect(() => {
           )} */}
         </div>
       </div>
-      <LpMobileNav lpNav={lpNav}  open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <LpMobileNav book={book} lpNav={lpNav}  open={mobileOpen} onClose={() => setMobileOpen(false)} />
     </header>
   );
 }

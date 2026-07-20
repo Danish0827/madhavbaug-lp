@@ -7,10 +7,12 @@ import { X, ChevronDown, ArrowUpRight } from "lucide-react";
 import { mainNav, utilityLeft, utilityRight } from "@/data/navigation";
 
 export default function LpMobileNav({
+  book,
   lpNav,
   open,
   onClose,
 }: {
+  book:string;
   lpNav: any[];
   open: boolean;
   onClose: () => void;
@@ -59,7 +61,7 @@ export default function LpMobileNav({
 
         <div className="px-5 pb-4">
           <Link
-            href="#book"
+            href={book ? `tel:${book}` : '#book'}
             onClick={onClose}
             className="inline-flex w-full items-center group"
           >

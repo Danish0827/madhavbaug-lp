@@ -1,8 +1,10 @@
+'use client'
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronRight, Headset } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import LeadForm from "./lp/LeadForm";
+import { useSearchParams } from "next/navigation";
 
 interface BreadcrumbItem {
     label: string;
@@ -38,6 +40,27 @@ export default function HeroBreadcrumb({
     pageTitle,
     leadCampaign,
 }: HeroBreadcrumbProps) {
+    const searchParams = useSearchParams();
+
+    const source = searchParams.get("utm_source");
+    const createLead = async () => {
+        try {
+            await fetch("https://powermap.in/api/v1/website/leads/create-page", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-API-Key": "MB_PROD_yozER_nc6sCpwHAfCQZOe8Go4OvQIiGBQ_QzluQNs",
+                },
+                body: JSON.stringify({
+                    campaign: imageAlt,
+                    source: source,
+                    medium: "Health Us",
+                }),
+            });
+        } catch (error) {
+            console.error("Lead API Error:", error);
+        }
+    };
     return (
         <section className="relative pb-20 xl:pb-24">
             <div className="relative h-190 w-full overflow-hidden lg:h-145 xl:h-170 2xl:h-220">
@@ -67,23 +90,33 @@ export default function HeroBreadcrumb({
                                 className="mt-3 xl:mt-5 [&_ul]:hidden [&_ul]:lg:flex text-white [&_p]:mb-6 [&_p]:text-base [&_p]:lg:text-sm [&_p]:xl:text-base [&_p]:leading-7 [&_p]:text-white/90  [&_ul]:flex-wrap [&_ul]:gap-4 [&_ul]:list-none [&_ul]:p-0 [&_ul]:m-0 [&_li]:flex [&_li]:items-center [&_li]:gap-2 [&_li]:rounded-full [&_li]:bg-white/15 [&_li]:backdrop-blur-sm [&_li]:px-4 [&_li]:py-2 [&_li]:lg:py-1.5 [&_li]:xl:py-3 [&_li]:lg:text-xs [&_li]:xl:text-sm [&_li]:text-sm [&_li]:font-medium [&_li]:text-white [&_li]:before:content-['✓'] [&_li]:before:flex [&_li]:before:items-center [&_li]:before:justify-center [&_li]:before:w-4 [&_li]:before:h-4 [&_li]:before:text-white"
                                 dangerouslySetInnerHTML={{ __html: heroDescription }}
                             />
-                            <div className={pageTitle === "Book an Appointment" ? "mt-6 flex flex-wrap justify-center lg:justify-start items-center gap-3 xl:mt-8 lg:gap-4" : "mt-6 flex flex-wrap items-center gap-3 xl:mt-8 lg:gap-4"}>
+                            <div className={pageTitle === "Book an Appointment" ? "mt-4 flex flex-wrap justify-start items-center gap-3 xl:mt-5 lg:gap-4" : "mt-4 flex flex-wrap items-center gap-3 xl:mt-5 lg:gap-4"}>
                                 {primaryButton && (
                                     <Link
+                                        onClick={() => {
+                                            createLead(); // fire-and-forget
+                                        }}
                                         href={primaryButton.href}
                                         className="inline-flex items-center group"
                                     >
                                         <span className="bg-white group-hover:bg-white/90 text-[rgb(137,47,172)] inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium shadow-lg">
                                             {primaryButton.label}
                                         </span>
-
-                                        <span className="flex h-10 items-center justify-center rounded-full bg-white/20">
-                                            <ArrowUpRight className="h-full w-full rounded-full bg-white p-2 text-[rgb(137,47,172)] duration-300 group-hover:rotate-45 group-hover:bg-white/90" />
-                                        </span>
+                                        {primaryButton.href === '#book' ?
+                                            <span className="flex h-10 items-center justify-center rounded-full bg-white/20">
+                                                <ArrowUpRight className="h-full w-full rounded-full bg-white p-2 text-[rgb(137,47,172)] duration-300 group-hover:rotate-45 group-hover:bg-white/90" />
+                                            </span>
+                                            :
+                                            <span className="flex h-10 items-center justify-center rounded-full bg-white/20">
+                                                <Headset className="h-full w-full rounded-full bg-white p-2 text-[rgb(137,47,172)] duration-300 group-hover:rotate-360 group-hover:bg-white/90" />
+                                            </span>}
                                     </Link>
                                 )}
                                 {secondaryButton && (
                                     <Link
+                                        onClick={() => {
+                                            createLead(); // fire-and-forget
+                                        }}
                                         href={secondaryButton.href}
                                         className="inline-flex items-center group"
                                     >

@@ -37,17 +37,15 @@ function BookButton({ label, light = false }: { label: string; light?: boolean }
   return (
     <Link href="#book" className="mt-7 inline-flex w-fit items-center group">
       <span
-        className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium shadow-lg ${
-          light ? "bg-white text-[rgb(137,47,172)]" : "btn-gradient text-white"
-        }`}
+        className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium shadow-lg ${light ? "bg-white text-[rgb(137,47,172)]" : "btn-gradient text-white"
+          }`}
       >
         {label}
       </span>
       <span className="flex h-10 w-fit items-center justify-center rounded-full bg-white/20">
         <ArrowUpRight
-          className={`h-full w-full rounded-full p-2.5 text-white shadow-lg duration-300 group-hover:rotate-45 group-hover:shadow-xl ${
-            light ? "bg-white !text-[rgb(137,47,172)]" : "btn-gradient"
-          }`}
+          className={`h-full w-full rounded-full p-2.5 text-white shadow-lg duration-300 group-hover:rotate-45 group-hover:shadow-xl ${light ? "bg-white !text-[rgb(137,47,172)]" : "btn-gradient"
+            }`}
         />
       </span>
     </Link>
@@ -75,25 +73,24 @@ export default async function LandingPage({ params }: Params) {
   const leadCampaign = `${disease} Landing Page`;
 
   console.log(t);
-  
+
   return (
     <div id="top" className="bg-white">
-      <LpHeader book={t?.banner?.banner_phone_number} title={t?.title}/>
+      <LpHeader book={t?.banner?.banner_phone_number} title={t?.title} />
       <main>
         {/* ---------- Hero + Form (banner) ---------- */}
         <HeroBreadcrumb
           image={t?.banner?.banner_image?.url}
           mobImage={t?.banner?.mobile_banner?.url}
-          imageAlt={t?.banner?.banner_image?.alt || t?.banner?.banner_heading}
+          imageAlt={t?.title}
           heroTitle={t?.banner?.banner_heading}
           heroDescription={t?.banner?.banner_content}
           pageTitle="Book an Appointment"
           breadcrumbs={null}
           leadCampaign={leadCampaign}
-          primaryButton={{ label: care.book_button?.title || "Book an Obesity Consultation", href: "#book" }}
+          primaryButton={{ label: t?.banner?.banner_phone_number ? 'Call Now' : care.book_button?.title || "Book an Obesity Consultation", href: t?.banner?.banner_phone_number ? `tel:${t?.banner?.banner_phone_number}` : "#book" }}
           secondaryButton={null}
         />
-
         {/* ---------- Care ---------- */}
         <section id="why-madhavbaug" className="scroll-mt-24 px-5 py-10 sm:px-8 lg:px-10 lg:py-10">
           <div className="mx-auto grid w-full h-full container items-center gap-10 lg:grid-cols-[45%_55%]">
@@ -138,7 +135,7 @@ export default async function LandingPage({ params }: Params) {
             </div>
             {why.why_choose_image?.url && (
               <div className="relative order-1 lg:order-2 h-full lg:h-80 overflow-hidden rounded-4xl lg:h-auto lg:rounded-l-none lg:rounded-r-4xl">
-                <Image src={why.why_choose_image.url} alt={why.why_choose_title || ""} width={1000} height={1000} className="object-cover lg:h-200 xl:h-160  object-center"  />
+                <Image src={why.why_choose_image.url} alt={why.why_choose_title || ""} width={1000} height={1000} className="object-cover lg:h-200 xl:h-160  object-center" />
               </div>
             )}
           </div>
@@ -149,8 +146,8 @@ export default async function LandingPage({ params }: Params) {
           <section id="doctor-led-assessment" className="scroll-mt-24 px-5 py-12 sm:px-8 lg:px-10 lg:py-16">
             <div className="mx-auto grid w-full h-full container items-center gap-10 lg:grid-cols-[45%_55%]">
               {ob.obesity_image?.url && (
-               <div className="relative order-1 xl:w-4/5 h-full mx-auto overflow-hidden rounded-[30px] shadow-sm ring-1 ring-black/5 ">
-                  <Image src={ob.obesity_image.url} alt={ob.obesity_main_title || ""} width={2000} height={2000} className="object-cover w-full h-full object-center"  />
+                <div className="relative order-1 xl:w-4/5 h-full mx-auto overflow-hidden rounded-[30px] shadow-sm ring-1 ring-black/5 ">
+                  <Image src={ob.obesity_image.url} alt={ob.obesity_main_title || ""} width={2000} height={2000} className="object-cover w-full h-full object-center" />
                 </div>
               )}
               <div className="order-1 lg:order-2">
@@ -210,8 +207,8 @@ export default async function LandingPage({ params }: Params) {
                 {after.after_booking_button?.title && <BookButton label={after.after_booking_button.title} />}
               </div>
               {after.after_booking_image?.url && (
-                 <div className="relative order-1 lg:order-2 xl:w-4/5 h-full mx-auto overflow-hidden rounded-[30px] shadow-sm ring-1 ring-black/5 ">
-                  <Image src={after.after_booking_image.url} alt={after.after_booking_title_copy || ""} width={1000} height={1000} className="object-cover lg:h-150  object-center"  />
+                <div className="relative order-1 lg:order-2 xl:w-4/5 h-full mx-auto overflow-hidden rounded-[30px] shadow-sm ring-1 ring-black/5 ">
+                  <Image src={after.after_booking_image.url} alt={after.after_booking_title_copy || ""} width={1000} height={1000} className="object-cover lg:h-150  object-center" />
                 </div>
               )}
             </div>
@@ -222,30 +219,30 @@ export default async function LandingPage({ params }: Params) {
         {booking.booking_section_description && (
           <section id="what-happens-next" className="scroll-mt-20 bg-gradient-to-b from-[#006589]/10 to-white px-5 py-14 sm:px-8 lg:px-10 lg:py-20">
             <div className="mx-auto grid w-full h-full container items-center gap-10 lg:grid-cols-[45%_55%]">
-            {booking.booking_image.url && (
-              <div className="relative order-1 xl:w-4/5 h-full mx-auto overflow-hidden rounded-[30px] shadow-sm ring-1 ring-black/5 ">
-                <Image src={booking.booking_image.url} alt={booking.booking_section_title || ""} width={1000} height={1000} className="object-cover w-full h-full object-top" />
-              </div>
-            )}
-             <div className="order-2">
-              <div className=" ">
-                <SectionLabel>{booking.booking_section_title}</SectionLabel>
-              </div>
-              <h2 className="font-display mt-4 text-2xl text-ink lg:text-[32px]">{booking.booking_section_main_title}</h2>
-              <div
-                className={` mt-5 max-w-2xl text-left ${PROSE} [&_ul]:grid sm:[&_ul]:grid-cols-2`}
-                dangerouslySetInnerHTML={{ __html: booking.booking_section_description }}
-              />
-              {booking.booking_section_button?.title && (
-                <div className="flex ">
-                  <BookButton label={booking.booking_section_button.title} />
+              {booking.booking_image.url && (
+                <div className="relative order-1 xl:w-4/5 h-full mx-auto overflow-hidden rounded-[30px] shadow-sm ring-1 ring-black/5 ">
+                  <Image src={booking.booking_image.url} alt={booking.booking_section_title || ""} width={1000} height={1000} className="object-cover w-full h-full object-top" />
                 </div>
               )}
-            </div>
+              <div className="order-2">
+                <div className=" ">
+                  <SectionLabel>{booking.booking_section_title}</SectionLabel>
+                </div>
+                <h2 className="font-display mt-4 text-2xl text-ink lg:text-[32px]">{booking.booking_section_main_title}</h2>
+                <div
+                  className={` mt-5 max-w-2xl text-left ${PROSE} [&_ul]:grid sm:[&_ul]:grid-cols-2`}
+                  dangerouslySetInnerHTML={{ __html: booking.booking_section_description }}
+                />
+                {booking.booking_section_button?.title && (
+                  <div className="flex ">
+                    <BookButton label={booking.booking_section_button.title} />
+                  </div>
+                )}
+              </div>
             </div>
           </section>
         )}
-   
+
 
         {/* ---------- FAQs (from API) ---------- */}
         {t.faq?.faqs?.length > 0 && (

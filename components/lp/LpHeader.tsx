@@ -13,6 +13,9 @@ import {
   MapPin,
   ShoppingBag,
   X,
+  PhoneCall,
+  Phone,
+  Headset,
 } from "lucide-react";
 
 import LpMobileNav from "../LpMobileNav";
@@ -211,11 +214,16 @@ export default function Navbar({ book, title }: Data) {
                 className="hidden lg:inline-flex items-center group"
               >
                 <span className="btn-gradient text-white group-hover:shadow-xl inline-flex items-center gap-2 rounded-full px-5 py-2 xl:py-3 text-sm lg:text-[13px] xl:text-sm font-medium  shadow-lg">
-                  Book a Consultation
+                  {book ? `Call Now` : 'Book a Consultation'}
                 </span>
-                <span className="flex  w-fit h-8 xl:h-10 items-center justify-center rounded-full bg-white/20">
-                  <ArrowUpRight className="font-thin w-full h-full p-2 rounded-full btn-gradient text-white group-hover:rotate-45 group-hover:shadow-xl duration-300 shadow-lg" />
-                </span>
+                {book ?
+                  <span className="flex  w-8 h-8 xl:w-10 xl:h-10 items-center justify-center rounded-full bg-white/20">
+                    <Headset className="font-thin w-full h-full p-2 rounded-full btn-gradient text-white group-hover:rotate-360 group-hover:shadow-xl duration-300 shadow-lg" />
+                  </span>
+                  :
+                  <span className="flex  w-fit h-8 xl:h-10 items-center justify-center rounded-full bg-white/20">
+                    <ArrowUpRight className="font-thin w-full h-full p-2 rounded-full btn-gradient text-white group-hover:rotate-45 group-hover:shadow-xl duration-300 shadow-lg" />
+                  </span>}
               </Link>
               <button
                 onClick={() => setMobileOpen(true)}
@@ -281,16 +289,20 @@ export default function Navbar({ book, title }: Data) {
             <Link
               href={book ? `tel:${book}` : '#book'}
               onClick={() => {
-                  createLead(); // fire-and-forget
-                }}
+                createLead(); // fire-and-forget
+              }}
               // onClick={() => setMobileOpen(false)}
               className="inline-flex w-full items-center group"
             >
-              <span className="btn-gradient w-full justify-center text-white group-hover:shadow-xl inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium  shadow-lg">
-                Book a Consultation
+              <span className="btn-gradient w-full justify-center text-white group-hover:shadow-xl inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium  shadow-lg">
+                {book ? `Call Now` : 'Book a Consultation'}
               </span>
               <span className="flex shrink-0 w-fit h-10 items-center justify-center rounded-full bg-white/20">
+              {book ?
+                <Headset className="font-thin w-full h-full p-2.5 rounded-full btn-gradient text-white group-hover:rotate-45 group-hover:shadow-xl duration-300 shadow-lg" />
+                :
                 <ArrowUpRight className="font-thin w-full h-full p-2.5 rounded-full btn-gradient text-white group-hover:rotate-45 group-hover:shadow-xl duration-300 shadow-lg" />
+              }
               </span>
             </Link>
           </div>

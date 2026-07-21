@@ -316,6 +316,28 @@ export default function Navbar({ book, title }: Data) {
         </div> */}
         </aside>
       </>
+      {book ?
+      <Link
+  onClick={() => {
+    createLead(); // fire-and-forget
+  }}
+  href={book ? `tel:${book}` : "#book"}
+  className="fixed bottom-5 right-5 z-50 flex items-center group"
+>
+  <span className="btn-gradient text-white group-hover:shadow-xl inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-medium shadow-lg">
+    {book ? "Call Now" : "Book a Consultation"}
+  </span>
+
+  {book ? (
+    <span className="flex w-10 h-10 items-center justify-center">
+      <Headset className="w-full h-full p-2 rounded-full btn-gradient text-white group-hover:rotate-[360deg] duration-300 shadow-lg" />
+    </span>
+  ) : (
+    <span className="flex w-10 h-10 items-center justify-center">
+      <ArrowUpRight className="w-full h-full p-2 rounded-full btn-gradient text-white group-hover:rotate-45 duration-300 shadow-lg" />
+    </span>
+  )}
+</Link>:''}
     </header>
   );
 }

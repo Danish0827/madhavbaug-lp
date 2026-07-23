@@ -6,8 +6,8 @@ import { Loader2, CheckCircle2, ArrowUpRight } from "lucide-react";
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function LeadForm({
-  source = "Website",
-  campaign = "Website Landing Page",
+  source = "Google Ads",
+  campaign,
 }: {
   source?: string;
   campaign?: string;
@@ -34,6 +34,7 @@ export default function LeadForm({
 
       source,
       campaign,
+      medium: "Health Us",
 
       email: "",
       disease: "",

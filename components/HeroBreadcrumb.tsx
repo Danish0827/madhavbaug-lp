@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowUpRight, ChevronRight, Headset } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import LeadForm from "./lp/LeadForm";
-import { useSearchParams } from "next/navigation";
 
 interface BreadcrumbItem {
     label: string;
@@ -40,9 +39,7 @@ export default function HeroBreadcrumb({
     pageTitle,
     leadCampaign,
 }: HeroBreadcrumbProps) {
-    const searchParams = useSearchParams();
 
-    const source = searchParams.get("utm_source");
     const createLead = async () => {
         try {
             await fetch("https://powermap.in/api/v1/website/leads/create-page", {
@@ -52,8 +49,8 @@ export default function HeroBreadcrumb({
                     "X-API-Key": "MB_PROD_yozER_nc6sCpwHAfCQZOe8Go4OvQIiGBQ_QzluQNs",
                 },
                 body: JSON.stringify({
-                    campaign: imageAlt,
-                    source: source,
+                    campaign: leadCampaign,
+                    source: 'Google Ads',
                     medium: "Health Us",
                 }),
             });
@@ -161,7 +158,7 @@ export default function HeroBreadcrumb({
                     {pageTitle === "Book an Appointment" ? (
                         <>
                             <div id="book" className="scroll-mt-24">
-                                <LeadForm source="Website" campaign={leadCampaign || "Website Landing Page"} />
+                                <LeadForm source="Google Ads" campaign={leadCampaign} />
                             </div>
                         </>
                     ) :

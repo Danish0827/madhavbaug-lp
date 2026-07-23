@@ -47,6 +47,7 @@ type LeadBody = {
   fbclid?: string;
 };
 
+
 export async function POST(request: Request) {
   let body: LeadBody;
   try {
@@ -61,7 +62,6 @@ export async function POST(request: Request) {
   const name = (body.name ?? "").trim();
   const phone = (body.phone ?? "").trim();
   const pin = (body.pin ?? "").trim();
-  const source = (body.source ?? "Website").trim() || "Website";
   const campaign = (body.campaign ?? "Website Landing Page").trim() || "Website Landing Page";
 
   if (!name || phone.replace(/\D/g, "").length < 10) {
@@ -75,7 +75,8 @@ export async function POST(request: Request) {
     name,
     phone,
     pin,
-    source,
+    source : 'Google Ads',
+    medium: "Health Us",
     campaign,
     submittedAt: new Date().toISOString(),
 
@@ -120,7 +121,7 @@ type Lead = {
   source: string;
   campaign: string;
   submittedAt: string;
-
+  medium: string,
   email?: string;
   disease?: string;
 
@@ -159,8 +160,8 @@ async function sendToCrm(lead: Lead): Promise<boolean> {
       phone: lead.phone,
       email: lead.email || "",
       disease: lead.disease || "",
-      city: lead.pin,
-
+      patient_pincode: lead.pin,
+      medium: lead.medium,
       source: lead.source,
       campaign: lead.campaign,
 

@@ -69,10 +69,8 @@ export default async function LandingPage({ params }: Params) {
   const counts: any[] = care.counts ?? [];
 
   // Disease-wise campaign name for the CRM, e.g. "obesity-care" -> "Obesity Landing Page".
-  const disease = (slug.split("-")[0] || "").replace(/^\w/, (c) => c.toUpperCase());
-  const leadCampaign = `${disease} Landing Page`;
-
-  console.log(t);
+  // const disease = (slug.split("-")[0] || "").replace(/^\w/, (c) => c.toUpperCase());
+  // console.log(t);
 
   return (
     <div id="top" className="bg-white">
@@ -87,7 +85,7 @@ export default async function LandingPage({ params }: Params) {
           heroDescription={t?.banner?.banner_content}
           pageTitle="Book an Appointment"
           breadcrumbs={null}
-          leadCampaign={leadCampaign}
+          leadCampaign={t?.title}
           primaryButton={{ label: t?.banner?.banner_phone_number ? 'Call Now' : care.book_button?.title || "Book an Obesity Consultation", href: t?.banner?.banner_phone_number ? `tel:${t?.banner?.banner_phone_number}` : "#book" }}
           secondaryButton={null}
         />
